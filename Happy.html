@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title></title>
+  </head>
+  <body>
+
+    <div id="history"></div>
+    <input type="text" id="user-input">
+    <input type="button" id="user-action">
+
+    <script>
+      const history    = document.getElementById("history")
+      const userInput  = document.getElementById("user-input")
+      const userAction = document.getElementById("user-action")
+
+      let playerScene = null
+      let playerName  = ""
+      let playerItems = []
+
+      // setup event handlers
+      userInput.onkeypress = function(event) {
+        if(event.key === "Enter") {
+          let text = getUserInput()
+          onUserInput(text)
+          setUserInput()
+        }
+      }
+
+      userAction.onclick = function(event) {
+        let text = getUserInput()
+        onUserInput(text)
+        setUserInput()
+      }
+
+      // system functions
+      function print(text) {
+        history.innerText += text + "\n"
+      }
+
+      function setUserInput(text="") {
+        userInput.value = text
+      }
+
+      function getUserInput(       ) {
+        return scrub(userInput.value)
+      }
+
+      function onUserInput(text) {
+        if(!text) return
+        print(text)
+        if(playerScene && playerScene.onInput)
+          playerScene.onInput(text)
+      }
+
+      function goto(scene) {
+        if(playerScene && playerScene.onDetach)
+          playerScene.onDetach()
+        playerScene = scene
+        if(playerScene && playerScene.onAttach)
+          playerScene.onAttach()
+      }
+
+      // helper functions
+      function scrub(text, keep="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 ") {
+        return [...text.trim()].filter(c => keep.includes(c)).join("")
+      }
+
+      function textIncludesAny(text, ...phrases) {
+        for(phrase of phrases)
+          if( text.includes(phrase))
+            return true
+        return false
+      }
+
+      function textIncludesAll(text, ...phrases) {
+        for(phrase of phrases)
+          if(!text.includes(phrase))
+            return false
+        return true
+      }
+
+      const START = {
+        onAttach() {
+          print("You awake in an empty field...")
+        }, 
+        onInput(text) {
+          if(textIncludesAny(text, "go north", "north")) {
+            print("You walk north...")
+            goto(NORTH)
+          } else {
+            print("I don't understand, please try again...")
+          }
+          
+        }
+      }
+
+      const NORTH = {
+        onAttach() {
+          print("You have walked north... congratulations!")
+        },
+
+        onInput(text) {
+
+        }
+      }
+
+      goto(START)
+
+    </script>
+  </body>
+</html>
