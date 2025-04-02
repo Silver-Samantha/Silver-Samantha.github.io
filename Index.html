@@ -5,11 +5,32 @@
         <link rel="stylesheet" href="./index.css">
     </head>
     <body>
-        <div class="flex-col justify-center align-center">
-
-            <h1>SILVERWINGS*STUDOS</h1>
+        <div class="flex-col justify-center align-center w-dvw h-dvh">
+            <h1 class="text-primary">SILVERWINGS*STUDOS</h1>
             <img src="Wing.png" class="pfp">
-            <a href="./About">About</a>
-            <a href="./Projects">Projects</a>
+            <div class="nav">
+
+                <a class="text-accent" href="./About">About</a>
+                <a class="text-accent" href="./Projects">Projects</a>
+            </div>
         </div>
+        <style>
+            .nav {display: flex;
+            flex-direction: column;
+            text-decoration: none;
+            padding : 2px;
+            border-radius : 1rem;
+            font-size: 1rem;
+            font-family: sans-serif;
+        }
+
+
+        .nav a:hover{
+            color: var(--theme-accent-content);
+            background: var(--theme-accent);
+
+        }
+
+        </style>
     </body>
+</html>
